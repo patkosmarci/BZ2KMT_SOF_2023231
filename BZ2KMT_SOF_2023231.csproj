@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-BZ2KMT_SOF_2023231-0ff6a31a-72f6-46e4-a2ed-b820cbc77c42</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>.</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.24" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.24" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.24" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.24" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.24" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+  </ItemGroup>
+
+    <ItemGroup>
+    	<UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css" />
+    	<UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
+    </ItemGroup>
+    
+    <Target Name="Tailwind" BeforeTargets="Build">
+    	<Exec Command="npm run css:build"/>
+    </Target>
+
+</Project>
