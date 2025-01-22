@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using BZ2KMT_SOF_2023231.Models;
+@model School
+@inject SignInManager<SiteUser> SignInManager
+@inject UserManager<SiteUser> UserManager
+
+@{
+    ViewBag.Title = "Title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin"))
+{
+    <h1>Iskola hozzáadása</h1>
+    <form action="create" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column">
+        @Html.HiddenFor(t => t.Students)
+        @Html.HiddenFor(t => t.Teachers)
+
+        @Html.LabelFor(t => t.Name)
+        @Html.EditorFor(t => t.Name)
+        @Html.ValidationMessageFor(s => s.Name)
+        <br />
+
+        @Html.LabelFor(t => t.Age)
+        @Html.EditorFor(t => t.Age)
+        @Html.ValidationMessageFor(s => s.Age)
+        <br />
+
+        @Html.LabelFor(t => t.Type)
+        @Html.DropDownListFor(s => s.Type, new SelectList(Enum.GetValues(typeof(stype))))
+        @Html.ValidationMessageFor(s => s.Type)
+        <br />
+
+        <label>Fotó</label>
+        <input type="file" name="imagedata" accept=".png,.jpg,.jpeg,.svg,.gif,.bmp" />
+        <input type="hidden" name="imagefilename" value="davidtennant" />
+        <br/>
+
+        <input type="submit" value="Hozzáadás" />
+    </form>
+}
+else
+{
+    <h1>Nincs hozzáférésed az oldalhoz!</h1>
+}

@@ -1,0 +1,44 @@
+﻿@using BZ2KMT_SOF_2023231.Models
+@model IEnumerable<School>
+@inject SignInManager<SiteUser> SignInManager
+@inject UserManager<SiteUser> UserManager
+
+@{
+    ViewBag.Title = "Title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Iskolák</h1>       
+    <table>
+        <thead>
+            <tr>
+                <th>Címer</th>
+                <th>Név</th>
+                <th>Kor</th>
+                <th>Diákok száma</th>
+                <th>Tanárok száma</th>
+                <th>Típus</th>
+                <th>Műveletek</th>
+            </tr>
+        </thead>
+        @foreach(var item in Model)
+        {
+            @:<tr>
+                @:<td><img height="100" src="/images/@item.ImageFileName"/></td>
+                @:<td>@item.Name</td>
+                @:<td>@item.Age</td>
+                @:<td>@item.Students.Count</td>
+                @:<td>@item.Teachers.Count</td>
+                @:<td>@item.Type</td>
+                @:<td>
+                if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin"))
+                {
+                @:    <a href="/school/delete?id=@item.Id">Delete</a>
+                @:    <a href="/school/update?id=@item.Id">Update</a>
+                }
+                @:</td>
+            @:</tr>
+        }
+    </table>
+    <br />
+<h3><a href="/school/create">Iskola hozzáadása</a></h3>

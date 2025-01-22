@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using BZ2KMT_SOF_2023231.Models;
+@model Student
+@inject SignInManager<SiteUser> SignInManager
+@inject UserManager<SiteUser> UserManager
+
+@{
+    ViewBag.Title = "Title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (SignInManager.IsSignedIn(User) && (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin") || await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Student")))
+{
+    <h1>Diák hozzáadása</h1>
+    <form action="create" method="post" style="display: flex; flex-direction: column">
+        @Html.HiddenFor(s => s.School)
+
+        @Html.LabelFor(s => s.Name)
+        @Html.EditorFor(s => s.Name)
+        @Html.ValidationMessageFor(s => s.Name)
+        <br />
+
+        @Html.LabelFor(s => s.Age)
+        @Html.EditorFor(s => s.Age)
+        @Html.ValidationMessageFor(s => s.Age)
+        <br />
+
+        @Html.LabelFor(s => s.GradesAVG)
+        @Html.EditorFor(s => s.GradesAVG)
+        @Html.ValidationMessageFor(s => s.GradesAVG)
+
+        @Html.LabelFor(t => t.SchoolId)
+        @Html.EditorFor(t => t.SchoolId)
+        @Html.ValidationMessageFor(s => s.SchoolId)
+        <br />
+
+        <input type="submit" value="Hozzáadás" />
+
+    </form>
+}
+else
+{
+    <h1>Nincs hozzáférésed az oldalhoz!</h1>
+}

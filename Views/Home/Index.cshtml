@@ -1,12 +1,15 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using BZ2KMT_SOF_2023231.Models
+
+@inject SignInManager<SiteUser> SignInManager
+@inject UserManager<SiteUser> UserManager
+
+@{
+    ViewBag.Title = "Title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Üdvözlünk az Iskolai Információs Portálon!</h1>
 
-<div style="font-size:xx-large">
-    Cicakutyya
-</div>
+<p>Ez a weboldal azért jött létre, hogy könnyedén hozzáférj az iskolákkal, diákokkal és tanárokkal kapcsolatos információkhoz. Böngéssz az intézmények között, nézd meg a diákok listáját, vagy ismerd meg közelebbről a tanárokat, akik az oktatást támogatják.</p>
+
+<p>Fedezd fel az oktatás világát egyszerűen és gyorsan!</p>

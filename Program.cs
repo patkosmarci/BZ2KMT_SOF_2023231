@@ -1,4 +1,6 @@
 using BZ2KMT_SOF_2023231.Data;
+using BZ2KMT_SOF_2023231.Models;
+using BZ2KMT_SOF_2023231.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,13 +8,26 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<SchollingDbContext>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<SiteUser>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+
+})
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<SchollingDbContext>();
+
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<ISchoolRepository, SchoolRepository>();
+builder.Services.AddTransient<IStudentRepository, StudentRepository>();
+builder.Services.AddTransient<ITeacherRepository, TeacherRepository>();
+builder.Services.AddDbContext<SchollingDbContext>();
 
 var app = builder.Build();
 
@@ -36,9 +51,20 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=school}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=student}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=teacher}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 app.Run();

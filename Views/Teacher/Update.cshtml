@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using BZ2KMT_SOF_2023231.Models;
+@model Teacher
+@inject SignInManager<SiteUser> SignInManager
+@inject UserManager<SiteUser> UserManager
+
+@{
+    ViewBag.Title = "Title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (SignInManager.IsSignedIn(User) && (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin") || await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Teacher")))
+{
+    <h1>Tanár adatainak frissítése</h1>
+    <form action="update" method="post" style="display: flex; flex-direction: column">
+        @Html.HiddenFor(s => s.Id)
+        @Html.HiddenFor(s => s.School)
+
+        @Html.LabelFor(s => s.Name)
+        @Html.EditorFor(s => s.Name)
+        @Html.ValidationMessageFor(s => s.Name)
+        <br />
+
+        @Html.LabelFor(s => s.MainSubject)
+        @Html.DropDownListFor(s => s.MainSubject, Html.GetEnumSelectList(typeof(subj)))
+        @Html.ValidationMessageFor(s => s.MainSubject)
+        <br />
+
+        @Html.LabelFor(s => s.Salary)
+        @Html.EditorFor(s => s.Salary)
+        @Html.ValidationMessageFor(s => s.Salary)
+        <br />
+
+        @Html.LabelFor(s => s.SchoolId)
+        @Html.EditorFor(s => s.SchoolId)
+        @Html.ValidationMessageFor(s => s.SchoolId)
+        <br />
+
+        <input type="submit" value="Frissítés" />
+    </form>
+}
+else
+{
+    <h1>Nincs hozzáférésed az oldalhoz!</h1>
+}

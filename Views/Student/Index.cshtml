@@ -1,0 +1,37 @@
+﻿@using BZ2KMT_SOF_2023231.Models
+@model IEnumerable<Student>
+@inject SignInManager<SiteUser> SignInManager
+@inject UserManager<SiteUser> UserManager
+
+@{
+    ViewBag.Title = "Title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Diákok</h1>    
+    <table>
+        <tr>
+            <th>Név</th>
+            <th>Kor</th>
+            <th>Átlag</th>
+            <th>Iskola</th>
+            <th>Műveletek</th>
+        </tr>
+        @foreach(var item in Model)
+        {
+            @:<tr>
+                @:<td>@item.Name</td>
+                @:<td>@item.Age</td>
+                @:<td>@item.GradesAVG</td>
+                @:<td>@item.School.Name</td>
+                @:<td>
+                if (SignInManager.IsSignedIn(User) && (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin") || await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Student")))
+                {
+                @:    <a href="/student/delete?id=@item.Id">Delete</a>
+                @:    <a href="/student/update?id=@item.Id">Update</a>
+                }
+                @:</td>
+            @:</tr>
+        }
+    </table>
+<h3><a href="/student/create">Diák hozzáadása</a></h3>
